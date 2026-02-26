@@ -1,0 +1,21 @@
+incident_id,title,description,category,root_cause,resolution_steps,timestamp,priority,service_name
+0,Database issue #0,Database connection error due to pool exhaustion,Database,DB connection pool exhaustion,"Restart service, check settings",2026-02-04 21:36:00,High,UserService
+1,Network issue #1,High network latency detected on server,Network,Network latency,"Check routers, reduce traffic load",2026-02-09 17:00:00,Medium,PaymentService
+2,Application issue #2,Null pointer exception in module,Application,NullPointerException,"Debug code, fix null checks",2026-01-23 13:47:00,High,UserService
+3,Server issue #3,Server CPU usage consistently high,Server,Server overload,"Scale server, optimize processes",2026-02-06 17:37:00,High,DBService
+4,Security issue #4,Unauthorized login attempt detected,Security,Unauthorized access,"Reset credentials, check audit logs",2026-02-06 00:49:00,Low,AuthService
+5,Database issue #5,Database connection error due to pool exhaustion,Database,DB connection pool exhaustion,"Restart service, check settings",2026-02-04 23:51:00,Low,PaymentService
+6,Network issue #6,High network latency detected on server,Network,Network latency,"Check routers, reduce traffic load",2026-01-27 22:03:00,Critical,PaymentService
+7,Application issue #7,Null pointer exception in module,Application,NullPointerException,"Debug code, fix null checks",2026-01-25 07:25:00,Medium,AuthService
+8,Server issue #8,Server CPU usage consistently high,Server,Server overload,"Scale server, optimize processes",2026-01-26 05:30:00,High,PaymentService
+9,Security issue #9,Unauthorized login attempt detected,Security,Unauthorized access,"Reset credentials, check audit logs",2026-02-05 14:44:00,High,NetworkService
+10,Database issue #10,Database connection error due to pool exhaustion,Database,DB connection pool exhaustion,"Restart service, check settings",2026-01-28 08:22:00,Medium,NetworkService
+11,Network issue #11,High network latency detected on server,Network,Network latency,"Check routers, reduce traffic load",2026-01-22 18:32:00,Critical,DBService
+12,Application issue #12,Null pointer exception in module,Application,NullPointerException,"Debug code, fix null checks",2026-02-08 06:23:00,Critical,PaymentService
+13,Server issue #13,Server CPU usage consistently high,Server,Server overload,"Scale server, optimize processes",2026-01-29 17:34:00,High,PaymentService
+14,Security issue #14,Unauthorized login attempt detected,Security,Unauthorized access,"Reset credentials, check audit logs",2026-02-08 08:04:00,Critical,AuthService
+15,Database issue #15,Database connection error due to pool exhaustion,Database,DB connection pool exhaustion,"Restart service, check settings",2026-01-26 23:09:00,Low,DBService
+16,Network issue #16,High network latency detected on server,Network,Network latency,"Check routers, reduce traffic load",2026-02-07 04:00:00,Medium,DBService
+17,Application issue #17,Null pointer exception in module,Application,NullPointerException,"Debug code, fix null checks",2026-02-07 11:03:00,Low,DBService
+18,Server issue #18,Server CPU usage consistently high,Server,Server overload,"Scale server, optimize processes",2026-01-23 11:51:00,Medium,NetworkService
+19,Security issue #19,Unauthorized login attempt detected,Security,Unauthorized access,"Reset credentials, check audit logs",2026-01-22 02:18:00,Medium,DBService
