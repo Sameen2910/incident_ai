@@ -9,3 +9,7 @@ venv/
 *.log
 .ipynb_checkpoints/
 dev/
+data/create_test.csv
+data/incidents.csv
+embeddings/faiss.index
+embeddings/texts.pkl
