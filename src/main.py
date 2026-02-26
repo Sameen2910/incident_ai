@@ -2,7 +2,7 @@
 from embed import build_and_save_index
 from rag import IncidentRAG
 import pandas as pd
-from src.preprocess import preprocess
+from preprocess import preprocess
 
 # -----------------------------
 # Load dataset and preprocess

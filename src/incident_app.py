@@ -1,7 +1,7 @@
 # streamlit.py
 import streamlit as st
 import pandas as pd
-from src.preprocess import preprocess
+from preprocess import preprocess
 from embed import build_and_save_index
 from rag import IncidentRAG
 
