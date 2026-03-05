@@ -7,7 +7,7 @@ from preprocess import preprocess
 # -----------------------------
 # Load dataset and preprocess
 # -----------------------------
-df = pd.read_csv("data/incidents.csv")
+df = pd.read_csv("data/incidents_10000.csv")
 df = preprocess(df)
 
 # -----------------------------

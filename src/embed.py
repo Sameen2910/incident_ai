@@ -1,46 +1,62 @@
+# embed.py
 import faiss
 import numpy as np
 import os
 import pickle
 from sentence_transformers import SentenceTransformer
 
-# Load a pre-trained model once
-model = SentenceTransformer("all-MiniLM-L6-v2")  # lightweight, fast model
+MODEL_NAME = "all-MiniLM-L6-v2"
+INDEX_DIR = "embeddings"
 
-def embed_texts(texts):
+# Load model once
+model = SentenceTransformer(MODEL_NAME)
+
+
+def embed_texts(texts, batch_size=64):
     """
-    Converts a list of texts into embeddings using SentenceTransformer.
+    Convert texts to embeddings.
+    Uses batching for speed.
     """
-    embeddings = model.encode(texts, convert_to_numpy=True, normalize_embeddings=True)
+    embeddings = model.encode(
+        texts,
+        batch_size=batch_size,
+        convert_to_numpy=True,
+        normalize_embeddings=True
+    )
     return embeddings.astype("float32")
 
 
-def build_and_save_index(texts, index_dir="embeddings"):
-    """
-    Builds a FAISS index for a list of texts and saves it.
-    """
+def build_and_save_index(texts, index_dir=INDEX_DIR):
+
     os.makedirs(index_dir, exist_ok=True)
 
     embeddings = embed_texts(texts)
     dim = embeddings.shape[1]
 
-    # Create FAISS index (L2 distance)
-    index = faiss.IndexFlatL2(dim)
+    # Cosine similarity index (better for normalized embeddings)
+    index = faiss.IndexFlatIP(dim)
     index.add(embeddings)
 
-    # Save FAISS index and original texts
     faiss.write_index(index, os.path.join(index_dir, "faiss.index"))
+
     with open(os.path.join(index_dir, "texts.pkl"), "wb") as f:
         pickle.dump(texts, f)
+
+    print(f"FAISS index built with {len(texts)} incidents")
 
     return index
 
 
-def load_index(index_dir="embeddings"):
-    """
-    Loads the FAISS index and associated texts.
-    """
-    index = faiss.read_index(os.path.join(index_dir, "faiss.index"))
+def load_index(index_dir=INDEX_DIR):
+
+    index_path = os.path.join(index_dir, "faiss.index")
+
+    if not os.path.exists(index_path):
+        raise ValueError("FAISS index not found. Run build_and_save_index first.")
+
+    index = faiss.read_index(index_path)
+
     with open(os.path.join(index_dir, "texts.pkl"), "rb") as f:
         texts = pickle.load(f)
+
     return index, texts

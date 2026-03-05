@@ -57,17 +57,17 @@ def generate_synthetic_incidents(n=5000):
 
     return pd.DataFrame(data)
 
-
 def preprocess(df):
 
     df["timestamp"] = pd.to_datetime(df["timestamp"])
 
     df["text"] = (
-        df["title"] + " " +
-        df["description"] + " " +
-        df["category"] + " " +
-        df["priority"] + " " +
-        df["service_name"]
+        "Incident Description: " + df["description"] +
+        ". Category: " + df["category"] +
+        ". Root Cause: " + df["root_cause"] +
+        ". Resolution: " + df["resolution_steps"] +
+        ". Priority: " + df["priority"] +
+        ". Service: " + df["service_name"]
     )
 
     return df
