@@ -1,39 +1,28 @@
 from ollama import Client
 from hybrid_retriever import HybridRetriever
-from predict_root_cause import predict_root_cause
-import subprocess
 
 class IncidentRAG:
 
-    def __init__(self, model_name="llama3:8b"):
+    def __init__(self, model_name="phi3:mini", top_k=3):
 
         self.client = Client()
         self.model_name = model_name
         self.retriever = HybridRetriever()
+        self.top_k = top_k
 
-        if not self._is_model_available():
-            subprocess.run(["ollama", "pull", model_name], check=True)
+    def generate(self, query, predicted_root, confidence):
 
-    def _is_model_available(self):
+        retrieved = self.retriever.search(query)[:self.top_k]
 
-        result = subprocess.run(
-            ["ollama", "list"],
-            capture_output=True,
-            text=True
+        MAX_CONTEXT = 400
+        clean_refs = [r[:MAX_CONTEXT] for r in retrieved]
+
+        context = "\n".join(
+            [f"{i+1}. {r}" for i, r in enumerate(clean_refs)]
         )
 
-        return self.model_name in result.stdout
-
-    def generate(self, query):
-
-        predicted_root,confidence = predict_root_cause(query)
-
-        retrieved = self.retriever.search(query)
-
-        context = "\n".join([f"- {r}" for r in retrieved])
-
         prompt = f"""
-You are an AI Incident Resolution Assistant.
+You are an AI Incident Copilot.
 
 Incident:
 {query}
@@ -41,15 +30,19 @@ Incident:
 Predicted Root Cause:
 {predicted_root}
 
-AI Confidence: {confidence*100:.1f}%
+Confidence:
+{confidence*100:.1f}%
 
-Relevant historical incidents:
+Similar historical incidents:
 {context}
 
-Respond in this format:
+Respond with:
+
+Executive Summary:
+(2-3 lines)
 
 Root Cause Analysis:
-Explain the likely root cause.
+Explain briefly.
 
 Recommended Actions:
 1.
@@ -57,13 +50,20 @@ Recommended Actions:
 3.
 
 Prevention Steps:
-List steps to avoid recurrence.
+1.
+2.
+
+Automation Opportunity:
+Suggest automation commands if possible.
 """
 
         response = self.client.chat(
             model=self.model_name,
             messages=[{"role": "user", "content": prompt}],
-            options={"temperature": 0.2}
+            options={
+                "temperature": 0.1,
+                "num_predict": 150
+            }
         )
 
-        return response["message"]["content"], retrieved
+        return response["message"]["content"], clean_refs
